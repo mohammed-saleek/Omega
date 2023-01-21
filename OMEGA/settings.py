@@ -105,7 +105,12 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+#User Authentication model
 AUTH_USER_MODEL = "accounts.User"
+
+#Stop generation Pycache files
+import sys
+sys.dont_write_bytecode = True
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/

@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
+
+from accounts.manager import CustomUserManager
 # Create your models here.
 
 class User(AbstractBaseUser, PermissionsMixin):
@@ -10,6 +12,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=False)
     token = models.CharField(max_length=255, null=True, blank=True)
     
+    objects = CustomUserManager()
     USERNAME_FIELD = 'email'
 
     # REQUIRED_FIELDS: ['username']
