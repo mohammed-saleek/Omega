@@ -2,11 +2,12 @@ from rest_framework.views import APIView
 from rest_framework.generics import GenericAPIView,ListAPIView
 from rest_framework.response import Response
 
-# from django.contrib.auth.models import User
 from accounts.models import User
 
 from rest_framework import permissions, mixins
-from .serializer import RegisterSerializer, UserSerializer
+from .serializer import RegisterSerializer, UserSerializer, MyTokenObtainPairSerializer
+from rest_framework.permissions import AllowAny
+from rest_framework_simplejwt.views import TokenObtainPairView
 
 
 class TodoListApiView(APIView):
@@ -43,6 +44,11 @@ class UserRegistration(GenericAPIView):
             "message": "User Created Successfully.  Now perform Login to get your token",
         })
 
+
+class MyObtainTokenPairView(TokenObtainPairView):
+    permission_classes = (permissions.AllowAny,)
+    serializer_class = MyTokenObtainPairSerializer
+    
 
 class ListUser(ListAPIView):
     serializer_class = UserSerializer
