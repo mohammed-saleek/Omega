@@ -2,12 +2,14 @@ from rest_framework.views import APIView
 from rest_framework.generics import GenericAPIView,ListAPIView
 from rest_framework.response import Response
 
-from accounts.models import User
-
 from rest_framework import permissions, mixins
-from .serializer import RegisterSerializer, UserSerializer, MyTokenObtainPairSerializer
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.authentication import TokenAuthentication
 from rest_framework_simplejwt.views import TokenObtainPairView
+
+from .serializer import RegisterSerializer, UserSerializer, MyTokenObtainPairSerializer
+
+from accounts.models import User
 
 
 class TodoListApiView(APIView):
@@ -17,17 +19,18 @@ class TodoListApiView(APIView):
         return Response(data)
 
 
-class test_params(APIView):
-    def get(self,request,*args,**kwargs):
+class TestParams(ListAPIView):
+    # authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+    def get(self, *args, **kwargs):
         try:
             data = {}
             # filter = self.kwargs['filter']
-            filter = request.GET.get("filter","")
-            test_item = request.GET.get("testitem","")
+            filter = self.request.GET.get("filter","")
+            test_item = self.request.GET.get("testitem","")
             data['test-item'] = test_item
             data['filter'] = filter
             data['message'] = "Testing"
-            # return Response(data)
         except Exception as exception:
             data['error'] = str(exception)
             data['status'] = 'Failed'
