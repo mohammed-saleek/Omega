@@ -14,6 +14,20 @@ from django.conf import settings
 
 from pathlib import Path
 
+#config parser
+from configparser import ConfigParser
+
+#getting database configurations
+config = ConfigParser()
+config.read('../omega.ini')
+
+DATABASE_USER = config.get('database', 'DATABASE_USER')
+DATABASE_PASSWORD = config.get('database', 'DATABASE_PASSWORD')
+DATABASE_ENGINE = config.get('database', 'DATABASE_ENGINE')
+DATABASE_NAME = config.get('database', 'DATABASE_NAME')
+DATABASE_HOST = config.get('database', 'DATABASE_HOST')
+DATABASE_PORT = config.get('database', 'DATABASE_PORT')
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -80,12 +94,24 @@ WSGI_APPLICATION = 'OMEGA.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
+MASTER_DB_NAMES = ['omega']
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': DATABASE_ENGINE,
+        'NAME': DATABASE_NAME,
+        'USER': DATABASE_USER,
+        'PASSWORD': DATABASE_PASSWORD,
+        'HOST': DATABASE_HOST,
+        'PORT': DATABASE_PORT
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
 
 
 # Password validation
