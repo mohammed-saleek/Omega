@@ -19,7 +19,7 @@ from configparser import ConfigParser
 
 #getting database configurations
 config = ConfigParser()
-config.read('../omega.ini')
+config.read('../temp/omega.ini')
 
 DATABASE_USER = config.get('database', 'DATABASE_USER')
 DATABASE_PASSWORD = config.get('database', 'DATABASE_PASSWORD')
