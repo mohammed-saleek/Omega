@@ -10,4 +10,7 @@ urlpatterns = [
     path('user/register', views.UserRegistration.as_view(), name='register-user'),
     path('login/', views.MyObtainTokenPairView.as_view(), name='token_obtain_pair'),
     path('login/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
+    #profile urls
+    path('user/profile/list', views.ProfileListView.as_view(), name="profile-listing"),
+    path('user/profile/create', views.ProfileCreateView.as_view(), name="profile-create"),
 ]
