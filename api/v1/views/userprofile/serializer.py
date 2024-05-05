@@ -2,14 +2,28 @@ from rest_framework.serializers import (
     ModelSerializer, SerializerMethodField, CharField, IntegerField,
     DateTimeField
 )
-from userprofile.models import Profile
+from userprofile.models import (
+    Profile, Address
+)
 from api.v1.views.auth.serializer import UserSerializer
 
 #serializer classes
-class UserProfileSerializerList(ModelSerializer):
+class AddressCreateSerializer(ModelSerializer):
+    class Meta:
+        model = Address
+        fields = [
+            "city",
+            "state",
+            "country",
+            "postal_code"
+        ]
+    
+    
+class UserProfileListSerializer(ModelSerializer):
     user = SerializerMethodField(read_only=True)
     education = SerializerMethodField(read_only=True)
     profession = SerializerMethodField(read_only=True)
+    address = SerializerMethodField(read_only=True)
     
     def get_user(self, obj):
         try:
@@ -44,7 +58,33 @@ class UserProfileSerializerList(ModelSerializer):
             return data
         except Exception as exception:
             return None
+    
+    def get_address(self, obj):
+        try:
+            data = {
+                "city": obj.address.city,
+                "state": obj.address.state,
+                "country": obj.address.country,
+                "postal_code": obj.address.postal_code
+            }
+            return data
+        except Exception as exception:
+            return None
         
+    class Meta:
+        model = Profile
+        fields = [
+            "object_id",
+            "user",
+            "education",
+            "profession",
+            "age",
+            "phone_number",
+            "address"
+        ]
+
+
+class ProfileCreateSerializer(ModelSerializer):
     class Meta:
         model = Profile
         fields = [
@@ -52,6 +92,6 @@ class UserProfileSerializerList(ModelSerializer):
             "education",
             "profession",
             "age",
-            "phone_number"
+            "phone_number",
+            "address"
         ]
-        
