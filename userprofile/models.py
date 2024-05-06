@@ -32,3 +32,4 @@ class Profile(models.Model):
     address = models.ForeignKey(Address, on_delete=models.CASCADE, blank=True, null=True)
     age = models.IntegerField()
     phone_number = models.CharField(max_length=15, blank=True, null=True)
+    is_deleted = models.BooleanField(default=False)

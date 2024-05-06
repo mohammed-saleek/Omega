@@ -57,3 +57,21 @@ class ProfileCreateView(CreateAPIView):
             response["message"] = "Profile creation failed"
             response["status"] = "failed"
             return Response(response, status=500)
+
+
+class ProfileDetailView(RetrieveAPIView):
+    queryset = Profile.objects.filter(is_deleted=False).order_by('id').all()
+    serializer_class = UserProfileListSerializer
+    lookup_field = "object_id"
+    permission_classes = [IsAuthenticated]
+    
+    def retrieve(self, request, *args, **kwargs):
+        data = {}
+        try:
+            instance = self.get_object()
+            serializer = self.get_serializer(instance)
+            data = serializer.data
+        except Exception as exception:
+            data["status"] = "failed"
+            data["message"] = str(exception)
+        return Response(data)
