@@ -100,3 +100,37 @@ class ProfileDeleteView(DestroyAPIView):
             data["status"] = "failed"
             data["message"] = str(exception)
         return Response(data)
+
+
+class ProfileUpdateView(UpdateAPIView):
+    queryset = Profile.objects.filter(is_deleted=False).order_by('id').all()
+    serializer_class = ProfileCreateSerializer
+    lookup_field = "object_id"
+    
+    def update(self, request, *args, **kwargs):
+        response = {}
+        try:
+            instance = self.get_object()
+            # Fetch Data
+            data = request.data.get("data")    
+            address_data = request.data.pop("address")
+            # Update Addresss
+            if address_data:
+                address_serializer = AddressCreateSerializer(instance.address, data=address_data, partial=True)
+                if address_serializer.is_valid():
+                    address_obj = address_serializer.save()
+                    data["address"] = address_obj.id
+            # Update Profile
+            data["user"] = request.user.id
+            serializer = self.get_serializer(instance, data=data, partial=True)
+            if serializer.is_valid():
+                self.perform_update(serializer)
+                response["status"] = "success"
+                response["message"] = "profile has been updated"
+            else:
+                response["status"] = "failed"
+                response["message"] = serializer.errors
+        except Exception as exception:
+            response["status"] = "failed"
+            response["message"] = str(exception)
+        return(Response(response))
