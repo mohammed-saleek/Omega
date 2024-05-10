@@ -39,7 +39,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-*f%_60e+8=2(%-la-7foeb$o^#synk^nr7-zrto(b1a@dpe!_d'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['localhost','127.0.0.1','projectomega.pythonanywhere.com']
 
@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     
     'api',
     'accounts',
+    'userprofile',
 ]
 
 MIDDLEWARE = [
@@ -160,7 +161,7 @@ REST_FRAMEWORK = {
 from datetime import timedelta
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=20),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
     "ROTATE_REFRESH_TOKENS": False,
     "BLACKLIST_AFTER_ROTATION": True,
