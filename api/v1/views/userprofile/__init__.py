@@ -20,7 +20,7 @@ class ProfileListView(ListAPIView):
     def get_queryset(self, *args, **kwargs):
         data = {}
         try:
-            queryset = Profile.objects.all()
+            queryset = Profile.objects.filter(is_deleted=False).order_by('id').all()
 
             return queryset
         except Exception as exception:
@@ -71,6 +71,31 @@ class ProfileDetailView(RetrieveAPIView):
             instance = self.get_object()
             serializer = self.get_serializer(instance)
             data = serializer.data
+        except Exception as exception:
+            data["status"] = "failed"
+            data["message"] = str(exception)
+        return Response(data)
+
+
+class ProfileDeleteView(DestroyAPIView):
+    queryset = Profile.objects.filter(is_deleted=False).order_by('id').all()
+    serializer_class = UserProfileListSerializer
+    lookup_field = "object_id"
+    permission_classes = [IsAuthenticated]
+    
+    def perform_destroy(self, instance):
+        instance.is_deleted = True
+        instance.save()
+        if instance.address:
+            instance.address.delete()
+    
+    def delete(self, request, *args, **kwargs):
+        data = {}
+        try:
+            instance = self.get_object()
+            self.perform_destroy(instance)
+            data["status"] = "success"
+            data["message"] = "Profile has been deleted successfully."
         except Exception as exception:
             data["status"] = "failed"
             data["message"] = str(exception)

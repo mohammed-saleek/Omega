@@ -14,4 +14,5 @@ urlpatterns = [
     path('user/profile/list', views.ProfileListView.as_view(), name="profile-listing"),
     path('user/profile/create', views.ProfileCreateView.as_view(), name="profile-create"),
     path('user/profile/<str:object_id>/detail', views.ProfileDetailView.as_view(), name="profile-detail"),
+    path('user/profile/<str:object_id>/delete', views.ProfileDeleteView.as_view(), name="profile-detail"),
 ]
