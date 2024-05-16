@@ -1,3 +1,4 @@
+from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.generics import (
     ListAPIView, DestroyAPIView, CreateAPIView, 
@@ -11,8 +12,23 @@ from userprofile.models import (
 from api.v1.views.userprofile.serializer import (
     UserProfileListSerializer, AddressCreateSerializer, ProfileCreateSerializer
 )
+#importing celery task
+from userprofile.tasks import my_task, sample_task
+from celery.result import AsyncResult
 
 #write your view classes here
+class TodoListApiView(APIView):
+    def get(self,request):
+        print("starting")
+        data = {}
+        task_result = my_task.delay()
+        celery_beat = sample_task.delay()
+        
+        data['message'] = "Testing"
+        data["testing celery"] = task_result.get()
+        return Response(data)
+
+
 class ProfileListView(ListAPIView):
     serializer_class = UserProfileListSerializer
     permission_classes = [IsAuthenticated]

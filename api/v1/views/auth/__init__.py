@@ -1,4 +1,3 @@
-from rest_framework.views import APIView
 from rest_framework.generics import GenericAPIView,ListAPIView
 from rest_framework.response import Response
 
@@ -10,14 +9,6 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from .serializer import RegisterSerializer, UserSerializer, MyTokenObtainPairSerializer
 
 from accounts.models import User
-
-
-class TodoListApiView(APIView):
-    def get(self,request):
-        data = {}
-        data['message'] = "Testing"
-        return Response(data)
-
 
 class TestParams(ListAPIView):
     # authentication_classes = [TokenAuthentication]

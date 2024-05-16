@@ -3,7 +3,7 @@ from api.v1 import views
 from rest_framework_simplejwt import views as jwt_views
 
 urlpatterns = [
-    # path('auth/login', views.TodoListApiView.as_view(), name="auth-login"),
+    path('user/testing', views.TodoListApiView.as_view(), name="user-testing"),
     path('test/params/<str:object_id>', views.TestParams.as_view(), name="test-params"),
     path('user/all', views.ListUser.as_view()),
     #User Registration and User Login
