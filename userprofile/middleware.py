@@ -9,7 +9,8 @@ class JWTAuthenticationMiddleware(MiddlewareMixin):
         # Login and Register Urls to be exempt from validation
         exempt_urls= [
             'token_obtain_pair',
-            'register-user'
+            'register-user',
+            'user-chat'
         ]
         try:
             # Resolve the current URL
