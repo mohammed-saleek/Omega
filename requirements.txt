@@ -1,12 +1,12 @@
 asgiref==3.4.1
 distlib==0.3.4
 dj-database-url==0.5.0
-Django==4.0.1
+django==4.2.2
 django-crispy-forms==1.14.0
 django-filter==22.1
 django-heroku==0.3.1
 django-multiselectfield==0.1.12
-djangorestframework==3.13.1
+djangorestframework==3.14.0
 djangorestframework-jwt==1.11.0
 djangorestframework-simplejwt==5.2.2
 et-xmlfile==1.1.0
@@ -36,3 +36,5 @@ mysqlclient==2.2.4
 celery==5.4.0
 django-celery-beat==2.6.0
 django-celery-results==2.5.1
+channels==3.0.5 #channels was not working on version 4 and above, from v4.0.0 of channels, ASGI in development mode does not work. You will have to install daphne as well  : python -m pip install -U daphne
+channels_redis==4.2.0
