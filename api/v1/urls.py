@@ -16,4 +16,6 @@ urlpatterns = [
     path('user/profile/<str:object_id>/detail', views.ProfileDetailView.as_view(), name="profile-detail"),
     path('user/profile/<str:object_id>/delete', views.ProfileDeleteView.as_view(), name="profile-detail"),
     path('user/profile/<str:object_id>/update', views.ProfileUpdateView.as_view(), name="profile-update"),
+    #cached url
+    path('user/cache/profile/list', views.CacheProfileListView.as_view(), name="cache-profile-listing"),
 ]
