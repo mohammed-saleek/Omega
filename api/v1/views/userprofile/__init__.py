@@ -6,6 +6,8 @@ from rest_framework.generics import (
 )
 from rest_framework.response import Response
 
+from django.conf import settings
+
 from userprofile.models import (
     Profile, EducationDetails, ProfessionDetails, Address
 )
@@ -15,6 +17,9 @@ from api.v1.views.userprofile.serializer import (
 #importing celery task
 from userprofile.tasks import my_task, sample_task
 from celery.result import AsyncResult
+
+# Imports for redis caching
+from django.core.cache import cache
 
 #write your view classes here
 class TodoListApiView(APIView):
@@ -150,3 +155,28 @@ class ProfileUpdateView(UpdateAPIView):
             response["status"] = "failed"
             response["message"] = str(exception)
         return(Response(response))
+
+
+# Redis Cache
+class CacheProfileListView(ListAPIView):
+    serializer_class = UserProfileListSerializer
+    permission_classes = [IsAuthenticated]
+    
+    def get_queryset(self, *args, **kwargs):
+        data = {}
+        cache_key = 'profile_list'
+
+        # Get data from cache if its available
+        queryset = cache.get(cache_key)
+        
+        if not queryset:
+            try:
+                queryset = Profile.objects.filter(is_deleted=False).order_by('id').all()
+                
+                # Cache the queryset
+                cache.set(cache_key, queryset, settings.CACHE_TTL)
+            except Exception as exception:
+                data["status"] = "failed"
+                data["message"] = str(exception)
+                return Response(data, status=500)
+        return queryset

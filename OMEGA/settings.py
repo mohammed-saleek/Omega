@@ -241,3 +241,17 @@ CELERY_TIMEZONE = 'Asia/Kolkata'
 
 # CELERY BEAT CONFIGURATION
 CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
+
+# Redis Caching Configuration
+CACHES = {
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': 'redis://127.0.0.1:6378/1',
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+        }
+    }
+}
+
+# Optional: Configure the cache timeout (in seconds)
+CACHE_TTL = 60 * 15  # Cache timeout of 15 minutes (60 denotes seconds)
