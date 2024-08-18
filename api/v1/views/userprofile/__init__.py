@@ -23,14 +23,15 @@ from django.core.cache import cache
 
 #write your view classes here
 class TodoListApiView(APIView):
+    permission_classes = [AllowAny]
     def get(self,request):
         print("starting")
         data = {}
-        task_result = my_task.delay()
-        celery_beat = sample_task.delay()
+        # task_result = my_task.delay()
+        # celery_beat = sample_task.delay()
         
         data['message'] = "Testing"
-        data["testing celery"] = task_result.get()
+        # data["testing celery"] = task_result.get()
         return Response(data)
 
 

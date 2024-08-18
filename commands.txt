@@ -1,0 +1,10 @@
+# Build and Run docker using these commands
+docker-compose build
+docker-compose up
+
+# Down docker
+docker-compose down
+
+# To get the log for docker, web and db are the name of the container
+docker-compose logs web 
+docker-compose logs db

@@ -10,7 +10,8 @@ class JWTAuthenticationMiddleware(MiddlewareMixin):
         exempt_urls= [
             'token_obtain_pair',
             'register-user',
-            'user-chat'
+            'user-chat',
+            'user-testing'
         ]
         try:
             # Resolve the current URL
