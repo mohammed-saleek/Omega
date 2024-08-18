@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/4.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
-
+import os
 from django.conf import settings
 
 from pathlib import Path
@@ -17,16 +17,17 @@ from pathlib import Path
 #config parser
 from configparser import ConfigParser
 
-#getting database configurations
+# Get database configurations
 config = ConfigParser()
-config.read('../temp/omega.ini')
+config.read('/app/temp/omega.ini')  # Ensure this path is correct for the Docker environment
 
-DATABASE_USER = config.get('database', 'DATABASE_USER')
-DATABASE_PASSWORD = config.get('database', 'DATABASE_PASSWORD')
-DATABASE_ENGINE = config.get('database', 'DATABASE_ENGINE')
-DATABASE_NAME = config.get('database', 'DATABASE_NAME')
-DATABASE_HOST = config.get('database', 'DATABASE_HOST')
-DATABASE_PORT = config.get('database', 'DATABASE_PORT')
+DATABASE_USER = os.getenv('DATABASE_USER', config.get('database', 'DATABASE_USER'))
+DATABASE_PASSWORD = os.getenv('DATABASE_PASSWORD', config.get('database', 'DATABASE_PASSWORD'))
+DATABASE_ENGINE = os.getenv('DATABASE_ENGINE', config.get('database', 'DATABASE_ENGINE'))
+DATABASE_NAME = os.getenv('DATABASE_NAME', config.get('database', 'DATABASE_NAME'))
+DATABASE_HOST = os.getenv('DATABASE_HOST', config.get('database', 'DATABASE_HOST'))
+DATABASE_PORT = os.getenv('DATABASE_PORT', config.get('database', 'DATABASE_PORT'))
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
